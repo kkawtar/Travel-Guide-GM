@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>#teamTenSeaMan</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+	 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">  <!-- Google web font "Open Sans" -->
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">                <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">                                      <!-- Bootstrap style -->
+    <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+    <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
+    <link rel="stylesheet" href="css/tooplate-style.css"> 
+	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+	<script src="GMLIB/info.js"></script>
+    <script src="GMLIB/system.js"></script>
+    
+
+    <style>
+        #map {
+            height: 390px;
+            width: 800px;
+        }
+    </style>
+    <!-- Uncomment libraries as you need them: -->
+    <!-- <script src="GMLIB/comm.js"></script> -->
+    <!-- <script src="GMLIB/io.js"></script> -->
+    <!-- <script src="GMLIB/media.js"></script> -->
+    <!-- <script src="GMLIB/monitor.js"></script> -->
+    <!-- <script src="GMLIB/nav.js"></script> -->
+    <!-- <script src="GMLIB/phone.js"></script> -->
+    <!-- <script src="GMLIB/system.js"></script> -->
+    <!-- <script src="GMLIB/ui.js"></script> -->
+    <!-- <script src="GMLIB/util.js"></script> -->
+    <!-- <script src="GMLIB/voice.js"></script> -->
+
+</head>
+<body >
+<div class="tm-top-bar-bg"></div>
+            <div class="tm-top-bar" id="tm-top-bar">
+                <!-- Top Navbar -->
+                <div class="container">
+                    <div class="row">
+                             
+                    </div>
+                </div>
+            </div>
+               
+                                 <div class="tm-section-2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col text-center">
+                            <div><a href="index.html"><img src="img/return.png" class="img1"></a></div><img src="img/travel.png" class="title"/><img src="img/close.png" onclick="gm.system.closeApp()" alt="close" class="img2"></a>
+                        </div>                
+                    </div>
+                </div>        
+            </div>
+			<h2>You are here</h2><br>
+    <div id="map"></div>
+
+  <script>
+        function initMap() {
+            function initializeCoords(position) {
+                var coords = {lat: position.coords.latitude, lng: position.coords.longitude};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 13,
+                    center: coords
+                });
+                var marker = new google.maps.Marker({
+                    position: coords,
+                   
+                    map: map
+                });
+            }
+            gm.info.getCurrentPosition(initializeCoords, true);
+            gm.info.watchPosition(initializeCoords, true);
+        }
+    </script>
+	<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgdkVNErOwpfFoS3To9ir3wtG1H5-yosw&callback=initMap">
+    </script>
+
+</body>
+</html>

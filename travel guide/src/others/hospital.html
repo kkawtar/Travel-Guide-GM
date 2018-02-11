@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place searches</title>  
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">  <!-- Google web font "Open Sans" -->
+    <link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">                <!-- Font Awesome -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">                                      <!-- Bootstrap style -->
+    <link rel="stylesheet" type="text/css" href="../slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="../slick/slick-theme.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/datepicker.css"/>
+    <link rel="stylesheet" href="../css/tooplate-style.css">      
+	<script src="../GMLIB/info.js"></script>
+    <script src="../GMLIB/system.js"></script>
+    <style>
+      html,
+body,
+#map {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px
+}
+    </style>
+   
+  </head>
+  <body>
+ 
+            <div class="tm-top-bar-bg"></div>
+            <div class="tm-top-bar" id="tm-top-bar">
+                <!-- Top Navbar -->
+                <div class="container">
+                    <div class="row">
+                             
+                    </div>
+                </div>
+            </div>
+			
+                      
+                                 <div class="tm-section-2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col text-center">
+                            <div><a href="index.html"><img src="../img/return.png" class="img1"></a></div><img src="../img/travel.png" class="title"/><img src="../img/close.png" onclick="gm.system.closeApp()" alt="close" class="img2">
+                        </div>                
+                    </div>
+                </div>        
+            </div>
+			
+<div id="hotel"></div>
+<div></br></br></br></br></div>
+<center><table><tr><td><a href="../sleep/loc.html"><img src="../img/loc.png" width=80px height=80px /></a></td><td></td><td><img src="../img/more.png" width=80px height=80px  /></td></tr></table></center>
+<div id="map"></div>
+
+
+ 
+ <script>
+var infowindow;
+ 
+gm.info.getCurrentPosition(updatePosition, true);
+gm.info.watchPosition(updatePosition, true);
+
+
+
+function loadMap()
+{
+  myLatlng = new google.maps.LatLng(0,0);
+
+  var mapOptions = {
+    zoom: 15,
+    center: myLatlng
+  };
+
+  map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+  infowindow = new google.maps.InfoWindow();
+  var img="../img/car.png"
+  marker = new google.maps.Marker({
+    position: myLatlng,
+    icon: img,
+    map: map,
+    animation: google.maps.Animation.DROP
+  });
+}
+function updatePosition(position) {
+  latitude = position.coords.latitude;
+  longitude = position.coords.longitude;
+  var location_ = {lat: latitude, lng: longitude};
+  myLatlng = new google.maps.LatLng(latitude, longitude);
+  map.setCenter(myLatlng);
+  marker.setPosition(myLatlng);
+
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch({
+    location: location_,
+    radius: 500,
+    type: ['police']
+  }, callback);
+  
+ 
+}
+
+function callback(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    var hotelname = '';
+    for (var i = 0; i < results.length; i++) { 
+      <!-- createMarker(results[i]);  -->
+      var name = results[i]['name'];
+      var photo = null;
+      if (results[i].photos && (results[i].photos.length > 0)) {
+        var photo = results[i]['photos'][0].getUrl({maxWidth: 60});
+      }
+      if (i < 6) {
+       
+        hotelname += '<ul ><li><span>' + name + '</span></li></ul>';
+		hotelname += '<ul ><li><img src="' + photo + '" alt="No Photos"/></li></ul>';
+		
+      }
+
+    }
+    $("#hotel").html(hotelname);
+  }
+}
+google.maps.event.addDomListener(window, "load", loadMap); 
+
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+   var img="../img/hot.png"
+  var marker = new google.maps.Marker({
+   map: map,
+    icon:img,
+    position: place.geometry.location,
+    animation: google.maps.Animation.DROP
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+}
+
+
+
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCamf7O6w1JE09lGbeTJQZ1KA4EyVErxOE&libraries=places&callback=loadMap"></script>
+ </body>
+</html>

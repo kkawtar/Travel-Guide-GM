@@ -1,0 +1,25 @@
+div.buttons {
+  height: 90px;
+  width: 90px;
+  display: inline-block;
+  margin: auto;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 2px solid turquoise;
+  border-radius: 50%;
+
+
+}
+wrapper {
+  height: 100%;
+  text-align: center;
+
+
+}
+
+#main {
+
+  height: auto;
+  padding: 10px;
+  
+}

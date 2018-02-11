@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place searches</title>  
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">  <!-- Google web font "Open Sans" -->
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">                <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">                                      <!-- Bootstrap style -->
+    <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+    <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
+    <link rel="stylesheet" href="css/tooplate-style.css">      
+	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+	<script src="GMLIB/info.js"></script>
+    <script src="GMLIB/system.js"></script>
+    <style>
+      html,
+body,
+#map {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px
+}
+    </style>
+   
+  </head>
+  <body>
+ 
+            <div class="tm-top-bar-bg"></div>
+            <div class="tm-top-bar" id="tm-top-bar">
+                <!-- Top Navbar -->
+                <div class="container">
+                    <div class="row">
+                             
+                    </div>
+                </div>
+            </div>
+			
+                      
+                                 <div class="tm-section-2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col text-center">
+                            <div><a href="places.html"><img src="img/return.png" class="img1"></a></div><img src="img/travel.png" class="title"/><img src="img/close.png" onclick="gm.system.closeApp()" alt="close" class="img2">
+                        </div>                
+                    </div>
+                </div>        
+            </div>
+<h2>historical monuments</h2><br>
+			
+<div id="hotel"></div>
+<center><table class="tbl">
+<tr>
+<td><div class="buttons"><img src="img/loc.png" width=60px height=60px onclick="javascript:visibilite('map'); return false;"/></div></td>
+<td></td>
+<td></td>
+<td><div class="buttons"><img src="img/more.png" width=60px height=60px  onclick="javascript:visibilite('allhotel'); return false;"/> </div></td>
+</tr>
+</table></center><br>
+
+<div id="map" class="Element"></div><div id="allhotel" class="Element" style="display:none;"></div>
+
+
+
+ 
+ <script>
+var infowindow;
+ 
+gm.info.getCurrentPosition(updatePosition, true);
+gm.info.watchPosition(updatePosition, true);
+
+
+
+function loadMap()
+{
+  myLatlng = new google.maps.LatLng(0,0);
+
+  var mapOptions = {
+    zoom: 15,
+    center: myLatlng
+  };
+
+  map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+  infowindow = new google.maps.InfoWindow();
+  var img="img/car.png"
+  marker = new google.maps.Marker({
+    position: myLatlng,
+    icon: img,
+    map: map,
+    animation: google.maps.Animation.DROP
+  });
+}
+function updatePosition(position) {
+  latitude = position.coords.latitude;
+  longitude = position.coords.longitude;
+  var location_ = {lat: latitude, lng: longitude};
+  myLatlng = new google.maps.LatLng(latitude, longitude);
+  map.setCenter(myLatlng);
+  marker.setPosition(myLatlng);
+
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch({
+    location: location_,
+    radius: 2000,
+    type: ['museum']
+  }, callback);
+  
+ 
+}
+
+function callback(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    var hotelname = '';
+	var  allhotelname=''
+    for (var i = 0; i < results.length; i++) { 
+      createMarker(results[i]); 
+      var name = results[i]['name'];
+      var photo = null;
+      if (results[i].photos && (results[i].photos.length > 0)) {
+        var photo = results[i]['photos'][0].getUrl({'maxWidth': 100, 'maxHeight':50});
+      }
+	  
+      if (i < 4){
+		hotelname += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ul id="calendar"><li><span>' + name + '</span><br><br><img class="displayed" src="' + photo + '" alt="No Photos"/></li></ul>';
+		
+      }
+	  if (i < 50){
+		allhotelname += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ul id="calendar"><li><span>' + name + '</span><br><br><img class="displayed" src="' + photo + '" alt="No Photos"/></li></ul>';
+		
+      }
+    }  
+    $("#hotel").html(hotelname);
+	$("#allhotel").html(allhotelname);
+  }
+}
+google.maps.event.addDomListener(window, "load", loadMap); 
+
+
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+   var img="img/mes.png"
+  var marker = new google.maps.Marker({
+   map: map,
+    icon:img,
+    position: place.geometry.location,
+    animation: google.maps.Animation.DROP
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+}
+function visibilite(thingId){
+    var targetElement;
+    var elements;
+    targetElement = document.getElementById(thingId) ;
+    elements = document.getElementsByClassName("Element")
+  
+    for (var i = 0; i < elements.length; i++) {
+     
+        if( !targetElement.isSameNode(elements[i]) ){
+             elements[i].style.display = "none" ;
+        }
+      
+    }
+      
+    if (targetElement.style.display == "none") {
+            targetElement.style.display = "" ;
+    } else{
+            targetElement.style.display = "none" ;
+    }
+}
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCamf7O6w1JE09lGbeTJQZ1KA4EyVErxOE&libraries=places&callback=loadMap"></script>
+ </body>
+</html>
