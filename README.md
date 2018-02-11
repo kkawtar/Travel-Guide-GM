@@ -35,3 +35,7 @@
 * Meryem BARKA
 * Rihab BAHRI
 ```
+```
+Master Big Data Analytics & Smart Systems.
+Faculty of science Dhar Mahraz - Fez/Morocco.
+```
